@@ -37,7 +37,7 @@ namespace CSharp_Simple_GUI
             InitializeStyles();
 
             // Update the chart and infoGrid with the first device's data
-            UpdateChart(devices[0].GetDataX(), devices[0].GetDataY());
+            UpdateChart(devices[0]);
             UpdateInfoGrid(devices[0]);
         }
 
@@ -73,7 +73,7 @@ namespace CSharp_Simple_GUI
 
             // Select the first item initially
             deviceComboBox.SelectedItem = deviceComboBox.Items[0];
-            deviceName.Content = devices[0].GetName();
+            UpdateDeviceLabel(devices[0].GetName());
 
             // Add function for handling SelectionChanged 
             deviceComboBox.SelectionChanged += deviceChanged;
@@ -111,7 +111,7 @@ namespace CSharp_Simple_GUI
             infoGrid.RowDefinitions.Add(rowDef5);
             infoGrid.RowDefinitions.Add(rowDef6);
 
-            // Add the first header row X 
+            // Add the first header row, X column
             TextBlock headerTextX = new TextBlock();
             headerTextX.Text = "X";
             headerTextX.FontSize = 20;
@@ -119,7 +119,8 @@ namespace CSharp_Simple_GUI
             Grid.SetRow(headerTextX, 0);
             Grid.SetColumn(headerTextX, 0);
             headerTextX.HorizontalAlignment = HorizontalAlignment.Center;
-
+            
+            // Add the first header row, Y column
             TextBlock headerTextY = new TextBlock();
             headerTextY.Text = "Y";
             headerTextY.FontSize = 20;
@@ -176,13 +177,18 @@ namespace CSharp_Simple_GUI
             }
         }
 
-        private void UpdateChart(double[] dataX, double[] dataY)
+        private void UpdateDeviceLabel(string name)
         {
-            WpfPlot1.Plot.Clear();
-            WpfPlot1.Plot.AddScatter(dataX, dataY);
-            WpfPlot1.Refresh();
+            deviceName.Content = name + " Dataset";
         }
 
+        // Updates Chart based on the given device's datasets
+        private void UpdateChart(Device device)
+        {
+            WpfPlot1.Plot.Clear();
+            WpfPlot1.Plot.AddScatter(device.GetDataX(), device.GetDataY());
+            WpfPlot1.Refresh();
+        }
 
         // deviceChanged is triggered on the SelectionChanged event on deviceComboBox.
         private void deviceChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -190,14 +196,14 @@ namespace CSharp_Simple_GUI
             //Get the current selection's content (device name) and display it in the deviceName label
             ComboBoxItem currentItem = deviceComboBox.SelectedItem as ComboBoxItem;
             string currentDeviceName = currentItem.Content.ToString();
-            deviceName.Content = currentDeviceName;
+            UpdateDeviceLabel(currentDeviceName);
 
             // Find corresponding device in device list and update its data to the chart
             foreach (Device device in devices)
             {
                 if (device.GetName() == currentDeviceName)
                 {
-                    UpdateChart(device.GetDataX(), device.GetDataY());
+                    UpdateChart(device);
                     UpdateInfoGrid(device);
                     break;
                 }

@@ -11,32 +11,32 @@ namespace CSharp_Simple_GUI
     /// </summary>
     public class Device
     {
-        int deviceID;
-        string deviceName;
-        private double[] dataX;
-        private double[] dataY;
+        private int _deviceID;
+        private string _deviceName;
+        private double[] _dataX; //Dataset, X values
+        private double[] _dataY; //Dataset, Y values
 
         public Device(int deviceID, string deviceName, (double[], double[]) dataArrays)
         {
-            this.deviceID = deviceID;
-            this.deviceName = deviceName;
-            this.dataX = dataArrays.Item1;
-            this.dataY = dataArrays.Item2;
+            _deviceID = deviceID;
+            _deviceName = deviceName;
+            _dataX = dataArrays.Item1;
+            _dataY = dataArrays.Item2;
         }
 
         public string GetName()
         {
-            return deviceName;
+            return _deviceName;
         }
 
         public double[] GetDataX()
         {
-            return dataX;
+            return _dataX;
         }
 
         public double[] GetDataY()
         {
-            return dataY;
+            return _dataY;
         }
     }
 }
