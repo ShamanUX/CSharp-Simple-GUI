@@ -22,7 +22,7 @@
                 </Grid>
             </StackPanel>
             
-            <ScottPlot:WpfPlot x:Name="WpfPlot1" />
+            <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="0,30,0,0" />
         </DockPanel>
     </Grid>
 </Window>

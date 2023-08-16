@@ -67,6 +67,25 @@ namespace CSharp_Simple_GUI
             infoGrid.RowDefinitions.Add(rowDef5);
             infoGrid.RowDefinitions.Add(rowDef6);
 
+            // Add the first header row
+            TextBlock headerTextX = new TextBlock();
+            headerTextX.Text = "X";
+            headerTextX.FontSize = 20;
+            headerTextX.FontWeight = FontWeights.Bold;
+            Grid.SetRow(headerTextX, 0);
+            Grid.SetColumn(headerTextX, 0);
+
+            TextBlock headerTextY = new TextBlock();
+            headerTextY.Text = "Y";
+            headerTextY.FontSize = 20;
+            headerTextY.FontWeight = FontWeights.Bold;
+            Grid.SetRow(headerTextY, 0);
+            Grid.SetColumn(headerTextY, 1);
+
+            // Add textBlocks as children to infogrid
+            infoGrid.Children.Add(headerTextX);
+            infoGrid.Children.Add(headerTextY);
+
             infoStackPanel.Children.Add(infoGrid);
         }
 
@@ -84,6 +103,11 @@ namespace CSharp_Simple_GUI
                 Device newDevice = new Device(correctedIndex, "Device #" + correctedIndex, dataArrays);
                 devices[deviceIndex] = newDevice;
             }
+        }
+
+        private void UpdateInfoGrid()
+        {
+
         }
 
         private void UpdateChart(double[] dataX, double[] dataY)
@@ -133,7 +157,7 @@ namespace CSharp_Simple_GUI
             string currentDeviceName = currentItem.Content.ToString();
             deviceName.Content = currentDeviceName;
 
-            // Find corresponding device in device list
+            // Find corresponding device in device list and update its data to the chart
             foreach (Device device in devices)
             {
                 if (device.GetName() == currentDeviceName)
