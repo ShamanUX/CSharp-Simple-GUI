@@ -7,19 +7,22 @@
         xmlns:local="clr-namespace:CSharp_Simple_GUI"
         mc:Ignorable="d"
         Title="C# GUI" Height="600" Width="800">
-    <Grid>   
-        <StackPanel
+    <Grid>
+        <DockPanel
             Margin="10"
             x:Name="topStackPanel">
-            <StackPanel>
+            <StackPanel x:Name="infoStackPanel">
                 <Label x:Name="headingLabel">Welcome to the device selector!</Label>
                 <StackPanel x:Name="deviceSelectorStackPanel" Orientation="Horizontal">
                     <Label>Select Your Device:</Label>
                 </StackPanel>
                 <Label x:Name="deviceName" Content="Device"></Label>
+                <Grid>
+                    
+                </Grid>
             </StackPanel>
             
-            <ScottPlot:WpfPlot x:Name="WpfPlot1" Height="200"  />
-        </StackPanel>
+            <ScottPlot:WpfPlot x:Name="WpfPlot1" />
+        </DockPanel>
     </Grid>
 </Window>

@@ -32,10 +32,42 @@ namespace CSharp_Simple_GUI
             InitializeComponent();
             InitializeDevices();
             InitializeComboBox();
+            InitializeInfoGrid();
             InitializeStyles();
 
             // Update the chart with the first device's data
             UpdateChart(devices[0].GetDataX(), devices[0].GetDataY());
+        }
+
+        private void InitializeInfoGrid()
+        {
+            Grid infoGrid = new Grid();
+            infoGrid.Height = 200;
+            infoGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            infoGrid.VerticalAlignment = VerticalAlignment.Top;
+            infoGrid.ShowGridLines = true;
+
+            // Define the Columns
+            ColumnDefinition colDef1 = new ColumnDefinition();
+            ColumnDefinition colDef2 = new ColumnDefinition();
+            infoGrid.ColumnDefinitions.Add(colDef1);
+            infoGrid.ColumnDefinitions.Add(colDef2);
+
+            // Define the Rows
+            RowDefinition rowDef1 = new RowDefinition();
+            RowDefinition rowDef2 = new RowDefinition();
+            RowDefinition rowDef3 = new RowDefinition();
+            RowDefinition rowDef4 = new RowDefinition();
+            RowDefinition rowDef5 = new RowDefinition();
+            RowDefinition rowDef6 = new RowDefinition();
+            infoGrid.RowDefinitions.Add(rowDef1);
+            infoGrid.RowDefinitions.Add(rowDef2);
+            infoGrid.RowDefinitions.Add(rowDef3);
+            infoGrid.RowDefinitions.Add(rowDef4);
+            infoGrid.RowDefinitions.Add(rowDef5);
+            infoGrid.RowDefinitions.Add(rowDef6);
+
+            infoStackPanel.Children.Add(infoGrid);
         }
 
         private void InitializeDevices()
