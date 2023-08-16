@@ -41,10 +41,49 @@ namespace CSharp_Simple_GUI
             UpdateInfoGrid(devices[0]);
         }
 
+        private void InitializeDevices()
+        {
+            // The number of devices to initialize
+            int deviceAmount = 3;
+            devices = new Device[3];
+
+            for (int deviceIndex = 0; deviceIndex < deviceAmount; deviceIndex++)
+            {
+                // Corrected index, so that indexing starts from 1
+                int correctedIndex = deviceIndex + 1;
+                (double[], double[]) dataArrays = GenerateDummyData(5);
+                Device newDevice = new Device(correctedIndex, "Device #" + correctedIndex, dataArrays);
+                devices[deviceIndex] = newDevice;
+            }
+        }
+
+        private void InitializeComboBox()
+        {
+            deviceComboBox = new ComboBox
+            {
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            // Create ComboBoxItems for each device
+            foreach (Device device in devices)
+            {
+                ComboBoxItem newItem = new ComboBoxItem { Content = device.GetName() };
+                deviceComboBox.Items.Add(newItem);
+            }
+
+            // Select the first item initially
+            deviceComboBox.SelectedItem = deviceComboBox.Items[0];
+            deviceName.Content = devices[0].GetName();
+
+            // Add function for handling SelectionChanged 
+            deviceComboBox.SelectionChanged += deviceChanged;
+
+            //Add the ComboBox to the mainwindow container
+            deviceSelectorStackPanel.Children.Add(deviceComboBox);
+        }
+
         private void InitializeInfoGrid()
         {
-            Button button;
-
             infoGrid = new Grid();
             infoGrid.Height = 200;
             infoGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -95,23 +134,12 @@ namespace CSharp_Simple_GUI
 
             infoStackPanel.Children.Add(infoGrid);
         }
-
-        private void InitializeDevices()
+        private void InitializeStyles()
         {
-            // The number of devices to initialize
-            int deviceAmount = 3;
-            devices = new Device[3];
-
-            for (int deviceIndex = 0; deviceIndex < deviceAmount; deviceIndex++)
-            {
-                // Corrected index, so that indexing starts from 1
-                int correctedIndex = deviceIndex + 1;
-                (double[], double[]) dataArrays = GenerateDummyData(5);
-                Device newDevice = new Device(correctedIndex, "Device #" + correctedIndex, dataArrays);
-                devices[deviceIndex] = newDevice;
-            }
+            headingLabel.FontSize = 30;
         }
 
+        // Updates the infoGrid with that device's data which is given in the parameter
         private void UpdateInfoGrid(Device device)
         {
             // Clear all textBlocks that are not in the header row
@@ -127,6 +155,7 @@ namespace CSharp_Simple_GUI
             double[] dataX = device.GetDataX();
             double[] dataY = device.GetDataY();
 
+            // Add X and Y values to the grid for each data point
             for (int i = 0; i < dataX.Length; i++ )
             {
                 TextBlock textX = new TextBlock();
@@ -154,37 +183,6 @@ namespace CSharp_Simple_GUI
             WpfPlot1.Refresh();
         }
 
-        private void InitializeStyles()
-        {
-            headingLabel.FontSize = 30;
-        }
-
-        private void InitializeComboBox()
-        {
-            deviceComboBox = new ComboBox
-            {
-                Width = 200,
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            // Create ComboBoxItems for each device
-            foreach (Device device in devices)
-            {
-                ComboBoxItem newItem = new ComboBoxItem { Content = device.GetName() };
-                deviceComboBox.Items.Add(newItem);
-            }
-
-            // Select the first item initially
-            deviceComboBox.SelectedItem = deviceComboBox.Items[0];
-            deviceName.Content = devices[0].GetName();
-
-            // Add function for handling SelectionChanged 
-            deviceComboBox.SelectionChanged += deviceChanged;
-
-            //Add the ComboBox to the mainwindow container
-            deviceSelectorStackPanel.Children.Add(deviceComboBox);
-        }
 
         // deviceChanged is triggered on the SelectionChanged event on deviceComboBox.
         private void deviceChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

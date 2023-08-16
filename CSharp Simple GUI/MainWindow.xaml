@@ -11,15 +11,15 @@
         <DockPanel
             Margin="10"
             x:Name="topStackPanel">
-            <StackPanel x:Name="infoStackPanel">
-                <Label x:Name="headingLabel">Welcome to the device selector!</Label>
+            <StackPanel x:Name="infoStackPanel" Width="257">
+                <Label x:Name="headingLabel" Margin="0,0,0,10">Device Data View</Label>
                 <StackPanel x:Name="deviceSelectorStackPanel" Orientation="Horizontal">
                     <Label>Select Your Device:</Label>
                 </StackPanel>
                 <Label x:Name="deviceName" Content="Device"></Label>
             </StackPanel>
             
-            <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="0,30,0,0" />
+            <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="0,88,0,0" />
         </DockPanel>
     </Grid>
 </Window>
