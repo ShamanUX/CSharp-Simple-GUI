@@ -21,6 +21,7 @@ namespace CSharp_Simple_GUI
     public partial class MainWindow : Window
     {
         private ComboBox deviceComboBox;
+        private Grid infoGrid;
         private Device[] devices;
         private static Random rng;
 
@@ -35,16 +36,20 @@ namespace CSharp_Simple_GUI
             InitializeInfoGrid();
             InitializeStyles();
 
-            // Update the chart with the first device's data
+            // Update the chart and infoGrid with the first device's data
             UpdateChart(devices[0].GetDataX(), devices[0].GetDataY());
+            UpdateInfoGrid(devices[0]);
         }
 
         private void InitializeInfoGrid()
         {
-            Grid infoGrid = new Grid();
+            Button button;
+
+            infoGrid = new Grid();
             infoGrid.Height = 200;
             infoGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
             infoGrid.VerticalAlignment = VerticalAlignment.Top;
+            
             infoGrid.ShowGridLines = true;
 
             // Define the Columns
@@ -67,13 +72,14 @@ namespace CSharp_Simple_GUI
             infoGrid.RowDefinitions.Add(rowDef5);
             infoGrid.RowDefinitions.Add(rowDef6);
 
-            // Add the first header row
+            // Add the first header row X 
             TextBlock headerTextX = new TextBlock();
             headerTextX.Text = "X";
             headerTextX.FontSize = 20;
             headerTextX.FontWeight = FontWeights.Bold;
             Grid.SetRow(headerTextX, 0);
             Grid.SetColumn(headerTextX, 0);
+            headerTextX.HorizontalAlignment = HorizontalAlignment.Center;
 
             TextBlock headerTextY = new TextBlock();
             headerTextY.Text = "Y";
@@ -81,6 +87,7 @@ namespace CSharp_Simple_GUI
             headerTextY.FontWeight = FontWeights.Bold;
             Grid.SetRow(headerTextY, 0);
             Grid.SetColumn(headerTextY, 1);
+            headerTextY.HorizontalAlignment = HorizontalAlignment.Center;
 
             // Add textBlocks as children to infogrid
             infoGrid.Children.Add(headerTextX);
@@ -105,9 +112,39 @@ namespace CSharp_Simple_GUI
             }
         }
 
-        private void UpdateInfoGrid()
+        private void UpdateInfoGrid(Device device)
         {
+            // Clear all textBlocks that are not in the header row
+            for (int i = infoGrid.Children.Count - 1; i >= 0; i--)
+            {
+                int rowIndex = Grid.GetRow(infoGrid.Children[i]);
+                if (rowIndex != 0)
+                {
+                    infoGrid.Children.RemoveAt(i);
+                }
+            }
 
+            double[] dataX = device.GetDataX();
+            double[] dataY = device.GetDataY();
+
+            for (int i = 0; i < dataX.Length; i++ )
+            {
+                TextBlock textX = new TextBlock();
+                TextBlock textY = new TextBlock();
+                textX.Text = dataX[i].ToString();
+                textY.Text = dataY[i].ToString();
+                textX.HorizontalAlignment = HorizontalAlignment.Center;
+                textY.HorizontalAlignment = HorizontalAlignment.Center;
+
+                // We're starting to add values from the second row on the grid, as the header is the first row
+                Grid.SetRow(textX, i + 1);
+                Grid.SetColumn(textX, 0);
+                Grid.SetRow(textY, i + 1);
+                Grid.SetColumn(textY, 1);
+
+                infoGrid.Children.Add(textX);
+                infoGrid.Children.Add(textY);
+            }
         }
 
         private void UpdateChart(double[] dataX, double[] dataY)
@@ -163,11 +200,13 @@ namespace CSharp_Simple_GUI
                 if (device.GetName() == currentDeviceName)
                 {
                     UpdateChart(device.GetDataX(), device.GetDataY());
+                    UpdateInfoGrid(device);
                     break;
                 }
             }
         }
 
+        // Creates data arrays for devices, from random values between 0 and 21.  
         private (double[], double[]) GenerateDummyData(int maxDataPoints)
         {
             double[] dataX = new double[maxDataPoints];
@@ -180,7 +219,7 @@ namespace CSharp_Simple_GUI
                 dataY[i] = rng.Next(0, 21);
             }
 
-            // Sort the X array
+            // Sort the X array, to make the data appear linear on that axis
             Array.Sort(dataX);
 
             return (dataX, dataY);

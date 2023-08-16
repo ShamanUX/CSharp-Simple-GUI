@@ -17,9 +17,6 @@
                     <Label>Select Your Device:</Label>
                 </StackPanel>
                 <Label x:Name="deviceName" Content="Device"></Label>
-                <Grid>
-                    
-                </Grid>
             </StackPanel>
             
             <ScottPlot:WpfPlot x:Name="WpfPlot1" Margin="0,30,0,0" />
